@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--namespace绑定一个对应的DAO的接口-->
+<mapper namespace="com.learn.mybatis.dao.UserMapper">
+    <!--结果映射集，将实体类的属性和数据库中的表字段映射-->
+    <resultMap id="userMap" type="User">
+        <!--column对应数据库中的表字段  property表示实体类中的属性-->
+        <result column="password" property="password"/>
+    </resultMap>
+    <!--select查询语句-->
+    <!--resultMap表示结果集合，如果实体类中的属性和数据库中的表字段不一致，则resultMap该方法作为映射-->
+    <select id="getUserList" resultMap="userMap">
+        select * from user
+    </select>
+    <select id="getUserByLike" resultType="User">
+        select * from user where name like #{name}
+    </select>
+    <!--只用一个字段筛选时-->
+    <select id="getUserById" resultType="User" parameterType="int">
+        select * from user where id=#{id}
+    </select>
+    <!--多个字段筛选时，使用map-->
+    <select id="getUserById2" resultType="User" parameterType="map">
+        select * from user where id=#{userId} and name=#{userName}
+    </select>
+    <!--对象中的属性可以直接取出来-->
+    <insert id="createUser" parameterType="User" useGeneratedKeys="true" keyProperty="id">
+        insert user (name, password) values (#{name},#{password})
+    </insert>
+    <!--使用map-->
+    <insert id="createUserByMap" parameterType="map">
+        insert user (name, password) values (#{userName},#{userPasswd})
+    </insert>
+    <delete id="deleteUser" parameterType="int">
+        delete from user where id=#{id}
+    </delete>
+    <update id="updateUser" parameterType="User">
+        update user set name=#{name},password=#{password} where id=#{id}
+    </update>
+    <!--分页-->
+    <select id="getUserByLimit" parameterType="map" resultMap="userMap">
+        select * from user limit #{startIndex} offset #{endIndex}
+    </select>
+</mapper>
