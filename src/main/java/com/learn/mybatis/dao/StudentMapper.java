@@ -2,12 +2,17 @@ package com.learn.mybatis.dao;
 
 import com.learn.mybatis.model.Student;
 import com.learn.mybatis.model.Teacher;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 // 多对一
 public interface StudentMapper {
 
-    Student getStudent(int id);
+    List<Student> getStudent(List<Integer> ids);
 
-    Student getStudent2(int id);
+    List<Student> getStudent2(Map<String, Object> map);
 
+    List<Student> getAllStudents(Map<String, Object> map);
 }
